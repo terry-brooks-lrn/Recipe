@@ -1,33 +1,41 @@
 ﻿using System;
 using System.Text;
+using System.Text.Json;
 using LearnositySDK.Request;
 using LearnositySDK.Utils;
 using System.Collections.Generic;
-using LearnositySDK;
-using System.Net;
-using System.Text.Json.Nodes;
 
 namespace LearnosityCookbookRecipe
 {
     public class Data
     {
-        public static string RequestCredentials(out string JSON)
+        public static string DataAPIRequest(out string JSON)
         {
+
+            string service = "data";
+            string questionsUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/questions";
+            string featuresUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/features";
+
+
             LearnositySDK.Utils.JsonObject security = new LearnositySDK.Utils.JsonObject();
             security.set("consumer_key", Secrets.ConsumerKey);
             security.set("domain", Secrets.Domain);
 
             string secret = Secrets.ConsumerSecret;
 
-            LearnositySDK.Utils.JsonObject request = new LearnositySDK.Utils.JsonObject();
-            request.set("limit", 1000);
+            Dictionary<string, object> dictionary = new Dictionary<string, object>>;
+            dictionary["questions"] = new List<Dictionary<string, object>>;
 
-            string action = "get";
+
+            // Seralized Data from Dict to String Before Request is 
+            var request = JsonSerializer.Serialize(dictionary);
+
+            string action = "set";
 
             Init i = new Init(service, security, secret, request, action);
             string parameters = i.generate();
             Remote remote = new Remote();
-            Remote r = remote.post(url, parameters);
+            Remote r = remote.post(questionsUrl, parameters);
 
             JSON = parameters;
             return r.getBody();
