@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json;
 using LearnositySDK.Request;
@@ -11,10 +11,9 @@ namespace LearnosityCookbookRecipe
     {
         public static string DataAPIRequest(out string JSON)
         {
-
-            string service = "data";
-            string questionsUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/questions";
-            string featuresUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/features";
+            var service = "data";
+            var questionsUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/questions";
+            var featuresUrl = "https://data.learnosity.com/v2023.1.LTS/itembank/features";
 
 
             LearnositySDK.Utils.JsonObject security = new LearnositySDK.Utils.JsonObject();
@@ -24,15 +23,16 @@ namespace LearnosityCookbookRecipe
             string secret = Secrets.ConsumerSecret;
 
             Dictionary<string, object> dictionary = new Dictionary<string, object>>;
-            dictionary["questions"] = new List<Dictionary<string, object>>;
+            dictionary["questions"] = new Array<Dictionary<string, object>>;
 
-
+            dictionary["questions"]
             // Seralized Data from Dict to String Before Request is 
             var request = JsonSerializer.Serialize(dictionary);
 
             string action = "set";
+            var securityPacket = JsonSerializer.Serialize(security);
 
-            Init i = new Init(service, security, secret, request, action);
+            Init i = new Init(service, securityPacket, secret, request, action);
             string parameters = i.generate();
             Remote remote = new Remote();
             Remote r = remote.post(questionsUrl, parameters);
